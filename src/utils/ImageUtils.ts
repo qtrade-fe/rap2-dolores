@@ -11,3 +11,14 @@ export const getBGImageUrl = () => {
   const url = BG_IMAGE_LIST[_.random(0, n - 1)]
   return `url(${url}?x-oss-process=image/resize,w_2048) no-repeat center center fixed`
 }
+export const getAvatarUrl = (user: any, size: 'small'|'normal' = 'normal') => {
+  const { avatar } = user
+  console.log(avatar)
+  if (avatar && size === 'small') {
+    return avatar.replace(/\/0$/, `/100`)
+  }
+  if (avatar) {
+    return avatar
+  }
+  return 'https://aliwork.alicdn.com/tfscom/T1fxt7FtJlXXXXXXXX_220x220'
+}

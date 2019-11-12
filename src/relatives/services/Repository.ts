@@ -56,6 +56,15 @@ export default {
     })
       .then(res => res.json())
   },
+  importRepositoryByFront(data: any) {
+    return fetch(`${serve}/repository/import/swagger/data`, {
+      ...CREDENTIALS,
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(res => res.json())
+  },
   deleteRepository(id: any) {
     return fetch(`${serve}/repository/remove?id=${id}`, { ...CREDENTIALS })
       .then(res => res.json())

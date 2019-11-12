@@ -22,6 +22,7 @@ export default function ExportPostmanForm(props: {
   const { repoId, open, onClose, title } = props
   const markdownLink = `${config.serve}/export/markdown?id=${repoId}&origin=${window.location.origin}`
   const docxLink = `${config.serve}/export/docx?id=${repoId}&origin=${window.location.origin}`
+  const htmlLink = `${config.serve}/export/html?id=${repoId}&origin=${window.location.origin}`
   // const pdfLink = `${config.serve}/export/pdf?id=${repoId}&origin=${window.location.origin}`
   return (
     <Dialog
@@ -68,6 +69,16 @@ export default function ExportPostmanForm(props: {
               style={{ margin: '8px 0' }}
             >
               <a href={docxLink}>{docxLink}</a>
+            </div>
+          </div>
+          <div>
+            <div>Html:</div>
+            <div
+              className="alert alert-info"
+              role="alert"
+              style={{ margin: '8px 0' }}
+            >
+              <a href={htmlLink}>{htmlLink}</a>
             </div>
           </div>
 

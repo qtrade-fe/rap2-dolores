@@ -14,11 +14,14 @@ const relatives = {
         case 'INTERFACE_UNLOCK':
         case 'REPOSITORY_UPDATE':
         case 'PROPERTIES_UPDATE':
+        case 'INTERFACE_SYNC':
           return true
         case 'INTERFACE_LOCK_SUCCEEDED':
         case 'INTERFACE_LOCK_FAILED':
         case 'INTERFACE_UNLOCK_SUCCEEDED':
         case 'INTERFACE_UNLOCK_FAILED':
+        case 'INTERFACE_SYNC_SUCCEEDED':
+        case 'INTERFACE_SYNC_FAILED':
         case 'REPOSITORY_UPDATE_SUCCEEDED':
         case 'REPOSITORY_UPDATE_FAILED':
         case 'PROPERTIES_UPDATE_SUCCEEDED':

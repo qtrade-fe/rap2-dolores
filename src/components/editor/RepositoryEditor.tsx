@@ -36,11 +36,11 @@ import {
 } from '../../actions/property'
 import {
   GoRepo,
+  GoPencil,
   GoPlug,
   GoDatabase,
   GoJersey,
-  GoLinkExternal,
-  GoPencil
+  GoLinkExternal
 } from 'react-icons/go'
 
 import './RepositoryEditor.css'

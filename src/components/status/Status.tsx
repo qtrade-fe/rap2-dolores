@@ -24,7 +24,7 @@ class Status extends Component<any, any> {
     }
   }
   render() {
-    const { counter, users, organizations, repositories, interfaces } = this.props
+    const { counter, users, repositories, interfaces } = this.props
     let { analyticsUsersActivation, analyticsRepositoriesActivation } = this.props
     const { analyticsRepositoriesCreated, analyticsRepositoriesUpdated } = this.props
     // analyticsRepositoriesCreated = analyticsRepositoriesCreated.map((item, index, array) => ({
@@ -45,7 +45,7 @@ class Status extends Component<any, any> {
       ['版本', counter.version, ''],
       ['用户', users.pagination.total, '人'],
       ['模拟', counter.mock, '次'],
-      ['团队', organizations.pagination.total, '个'],
+
       ['仓库', repositories.pagination.total, '个'],
       ['接口', interfaces.pagination.total, '个'],
     ]

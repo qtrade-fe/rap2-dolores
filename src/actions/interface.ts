@@ -114,3 +114,16 @@ export const sortInterfaceListFailed = (message: any) => ({
   type: 'INTERFACE_LIST_SORT_FAILED',
   message,
 })
+export const syncInterface = (id: any, onResolved?: any) => ({
+  type: 'INTERFACE_SYNC',
+  id,
+  onResolved,
+})
+export const syncInterfaceSucceeded = (payload: any) => ({
+  type: 'INTERFACE_SYNC_SUCCEEDED',
+  payload,
+})
+export const syncInterfaceFailed = (message: any) => ({
+  type: 'INTERFACE_SYNC_FAILED',
+  message,
+})

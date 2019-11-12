@@ -20,6 +20,7 @@ export default {
     INTERFACE_COUNT: InterfaceEffects.fetchInterfaceCount,
     INTERFACE_LOCK: InterfaceEffects.lockInterface,
     INTERFACE_UNLOCK: InterfaceEffects.unlockInterface,
+    INTERFACE_SYNC: InterfaceEffects.syncInterface,
 
     PROPERTY_ADD: PropertyEffects.addProperty,
     // PROPERTY_UPDATE: PropertyEffects.updateProperty,

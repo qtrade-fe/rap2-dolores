@@ -1,6 +1,7 @@
 import { call, put, select } from 'redux-saga/effects'
 import * as RepositoryAction from '../../actions/repository'
 import RepositoryService from '../services/Repository'
+import ImportService from '../services/Import'
 import { RootState } from 'actions/types'
 
 //
@@ -14,7 +15,10 @@ export function* fetchRepositoryCount(action: any) {
 }
 export function* fetchRepositoryList(action: any) {
   try {
-    const repositories = yield call(RepositoryService.fetchRepositoryList, action)
+    const repositories = yield call(
+      RepositoryService.fetchRepositoryList,
+      action
+    )
     yield put(RepositoryAction.fetchRepositoryListSucceeded(repositories))
   } catch (e) {
     yield put(RepositoryAction.fetchRepositoryListFailed(e.message))
@@ -22,9 +26,14 @@ export function* fetchRepositoryList(action: any) {
 }
 export function* addRepository(action: any) {
   try {
-    const repository = yield call(RepositoryService.addRepository, action.repository)
+    const repository = yield call(
+      RepositoryService.addRepository,
+      action.repository
+    )
     yield put(RepositoryAction.addRepositorySucceeded(repository))
-    if (action.onResolved) { action.onResolved() }
+    if (action.onResolved) {
+      action.onResolved()
+    }
   } catch (e) {
     yield put(RepositoryAction.addRepositoryFailed(e.message))
   }
@@ -33,7 +42,9 @@ export function* deleteRepository(action: any) {
   try {
     const count = yield call(RepositoryService.deleteRepository, action.id)
     yield put(RepositoryAction.deleteRepositorySucceeded(count))
-    if (action.onResolved) { action.onResolved() }
+    if (action.onResolved) {
+      action.onResolved()
+    }
   } catch (e) {
     yield put(RepositoryAction.deleteRepositoryFailed(e.message))
   }
@@ -41,15 +52,27 @@ export function* deleteRepository(action: any) {
 export function* updateRepository(action: any) {
   try {
     const r = action.repository
-    const acceptedKeys = ['creatorId', 'organizationId', 'memberIds', 'id', 'collaboratorIds', 'description', 'ownerId', 'visibility', 'name']
+    const acceptedKeys = [
+      'creatorId',
+      'organizationId',
+      'memberIds',
+      'id',
+      'collaboratorIds',
+      'description',
+      'ownerId',
+      'visibility',
+      'name',
+    ]
     const params: any = {}
     acceptedKeys.forEach(x => {
       params[x] = r[x]
     })
     yield call(RepositoryService.updateRepository, params)
     yield put(RepositoryAction.updateRepositorySucceeded(params))
-    yield put(RepositoryAction.fetchRepository({id: params.id}))
-    if (action.onResolved) { action.onResolved() }
+    yield put(RepositoryAction.fetchRepository({ id: params.id }))
+    if (action.onResolved) {
+      action.onResolved()
+    }
   } catch (e) {
     yield put(RepositoryAction.updateRepositoryFailed(e.message))
   }
@@ -60,7 +83,9 @@ export function* importRepository(action: any) {
     const res = yield call(RepositoryService.importRepository, action.data)
     if (res.isOk) {
       yield put(RepositoryAction.importRepositorySucceeded())
-      if (action.onResolved) { action.onResolved(res) }
+      if (action.onResolved) {
+        action.onResolved(res)
+      }
     } else {
       throw new Error(res.message)
     }
@@ -69,9 +94,32 @@ export function* importRepository(action: any) {
   }
 }
 
+export function* importRepositoryByFront(action: any) {
+  try {
+    const apiDocs = yield call(ImportService.fetchSwaggerDoc, action.data)
+    const res = yield call(RepositoryService.importRepositoryByFront, {
+      apiDocs,
+      orgId: action.data.orgId,
+    })
+    if (res.isOk) {
+      yield put(RepositoryAction.importRepositoryByFrontSucceeded())
+      if (action.onResolved) {
+        action.onResolved(res)
+      }
+    } else {
+      throw new Error(res.message)
+    }
+  } catch (e) {
+    yield put(RepositoryAction.importRepositoryByFrontFailed(e.message))
+  }
+}
+
 export function* fetchRepository(action: any) {
   try {
-    const count = yield call(RepositoryService.fetchRepository, action.repository || action.id)
+    const count = yield call(
+      RepositoryService.fetchRepository,
+      action.repository || action.id
+    )
     yield put(RepositoryAction.fetchRepositorySucceeded(count))
   } catch (e) {
     yield put(RepositoryAction.fetchRepositoryFailed(e.message))
@@ -79,7 +127,10 @@ export function* fetchRepository(action: any) {
 }
 
 export function* handleRepositoryLocationChange(action: any) {
-  const repositoryId = yield select((state: RootState) => state.repository && state.repository.data && state.repository.data.id)
+  const repositoryId = yield select(
+    (state: RootState) =>
+      state.repository && state.repository.data && state.repository.data.id
+  )
   if (Number(action.id) !== repositoryId) {
     yield put(RepositoryAction.fetchRepository(action))
   }
@@ -87,7 +138,10 @@ export function* handleRepositoryLocationChange(action: any) {
 
 export function* fetchOwnedRepositoryList(action: any) {
   try {
-    const repositories = yield call(RepositoryService.fetchOwnedRepositoryList, action)
+    const repositories = yield call(
+      RepositoryService.fetchOwnedRepositoryList,
+      action
+    )
     yield put(RepositoryAction.fetchOwnedRepositoryListSucceeded(repositories))
   } catch (e) {
     yield put(RepositoryAction.fetchOwnedRepositoryListFailed(e.message))
@@ -96,8 +150,13 @@ export function* fetchOwnedRepositoryList(action: any) {
 
 export function* fetchJoinedRepositoryList(action: any) {
   try {
-    const repositories = yield call(RepositoryService.fetchJoinedRepositoryList, action)
-    yield put(RepositoryAction.fetchJoinedRepositoryListSucceeded(repositories))
+    const repositories = yield call(
+      RepositoryService.fetchJoinedRepositoryList,
+      action
+    )
+    yield put(
+      RepositoryAction.fetchJoinedRepositoryListSucceeded(repositories)
+    )
   } catch (e) {
     yield put(RepositoryAction.fetchJoinedRepositoryListFailed(e.message))
   }

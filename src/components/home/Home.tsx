@@ -8,10 +8,13 @@ import LogsCard from './LogsCard'
 import './Home.css'
 import { GoRepo } from 'react-icons/go'
 import { RootState } from 'actions/types'
+import Button from '@material-ui/core/Button'
 
 const Maiden = () => (
   <div className="Maiden">
-    <Link to="/repository/joined/create" className=" btn btn-lg btn-success"><GoRepo /> 新建仓库</Link>
+    <Button color="primary" variant="contained">
+      <Link to="/organization/repository?organization=1" className="btn btn-lg btn-success"><GoRepo /> 新建仓库</Link>
+    </Button>
   </div>
 )
 

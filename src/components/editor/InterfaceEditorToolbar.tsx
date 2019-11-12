@@ -3,6 +3,7 @@ import { Button, makeStyles, Theme, createStyles } from '@material-ui/core'
 import LoadingButton from '../common/LoadingButton'
 import Create from '@material-ui/icons/Create'
 import KeyboardTab from '@material-ui/icons/KeyboardTab'
+import SyncAlt from '@material-ui/icons/SyncAlt'
 import Save from '@material-ui/icons/Save'
 import Cancel from '@material-ui/icons/Cancel'
 import { useSelector } from 'react-redux'
@@ -36,15 +37,16 @@ interface Props {
   handleUnlockInterface: any
   handleMoveInterface: any
   handleLockInterface: any
+  handleSyncInterface: any
 }
 
 function InterfaceEditorToolbar(props: Props) {
   const { editable, locker, auth, repository, handleLockInterface, handleMoveInterface,
-    handleSaveInterfaceAndProperties, handleUnlockInterface } = props
+    handleSaveInterfaceAndProperties, handleUnlockInterface, handleSyncInterface } = props
   const isOwned = repository.owner.id === auth.id
   const isJoined = repository.members.find((item: any) => item.id === auth.id)
   const loading = useSelector((state: RootState) => state.loading)
-
+  const canSync = !!repository.sourceUrl
   const classes = useStyles()
   if (!isOwned && !isJoined) { return null }
   if (editable) {
@@ -77,6 +79,12 @@ function InterfaceEditorToolbar(props: Props) {
   }
   return (
     <div className="InterfaceEditorToolbar">
+      {
+        canSync &&
+        <LoadingButton className={classes.button} onClick={handleSyncInterface} variant="contained" disabled={loading} label="同步">
+          <SyncAlt className={classes.rightIcon} />
+        </LoadingButton>
+      }
       <Button className={classes.button} onClick={handleMoveInterface} variant="contained">
         移动 / 复制
         <KeyboardTab className={classes.rightIcon} />
@@ -84,6 +92,7 @@ function InterfaceEditorToolbar(props: Props) {
       <LoadingButton className={classes.button} onClick={handleLockInterface} variant="contained" color="primary" disabled={loading} label="编辑">
         <Create className={classes.rightIcon} />
       </LoadingButton>
+
     </div>
   )
 }

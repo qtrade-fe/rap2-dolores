@@ -60,8 +60,8 @@ export default function MainMenu(props: Props) {
           <div>
             <Link to="/" className={classes.logo}><Logo /> </Link>
             <Link to="/" className={classes.link}><Button color="inherit"> 首页 </Button></Link>
-            <Link to="/repository/joined" className={classes.link}><Button color="inherit"> 仓库 </Button></Link>
-            <Link to="/organization/joined" className={classes.link}><Button color="inherit"> 团队 </Button></Link>
+            <Link to="/organization/repository?organization=1" className={classes.link}><Button color="inherit"> 仓库 </Button></Link>
+            {/* <Link to="/organization/joined" className={classes.link}><Button color="inherit"> 团队 </Button></Link> */}
             <Link to="/api" className={classes.link}><Button color="inherit"> 接口 </Button></Link>
             <Link to="/status" className={classes.link}><Button color="inherit"> 状态 </Button></Link>
           </div>

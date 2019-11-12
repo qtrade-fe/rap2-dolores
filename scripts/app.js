@@ -3,8 +3,15 @@ const Koa = require('koa')
 const serve = require('koa-static')
 const Router = require('koa-router')
 const session = require('koa-session')
-const config = require('../src/config')
+// const config = require('../src/config')
 const app = new Koa()
+const config = {
+  serve: 'http://127.0.0.1:8081',
+  keys: ['some secret hurr'],
+  session: {
+    key: 'koa:sess',
+  },
+}
 
 app.keys = config.keys
 app.use(session(config.session, app))

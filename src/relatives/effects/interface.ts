@@ -101,3 +101,13 @@ export function* sortInterfaceList(action: any) {
     yield put(InterfaceAction.sortInterfaceListFailed(e.message))
   }
 }
+export function* syncInterface(action: any) {
+  try {
+    const payload = yield call(EditorService.syncInterface, action.id)
+    yield put(InterfaceAction.syncInterfaceSucceeded(payload))
+    if (action.onResolved) { action.onResolved(payload) }
+  } catch (e) {
+    console.error(e.message)
+    yield put(InterfaceAction.syncInterfaceFailed(e.message))
+  }
+}

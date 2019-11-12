@@ -3,7 +3,11 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import RadioList from '../utils/RadioList'
 import './ImportRepositoryForm.css'
-import { importRepository, fetchRepositoryList } from '../../actions/repository'
+import {
+  importRepository,
+  importRepositoryByFront,
+  fetchRepositoryList
+} from '../../actions/repository'
 import { Button } from '@material-ui/core'
 
 class ImportRepositoryForm extends Component<any, any> {
@@ -13,13 +17,15 @@ class ImportRepositoryForm extends Component<any, any> {
   static propTypes = {
     orgId: PropTypes.number.isRequired,
     importRepository: PropTypes.func.isRequired,
+    importRepositoryByFront: PropTypes.func.isRequired,
   }
   constructor(props: any) {
     super(props)
     this.state = {
       orgId: props.orgId,
-      version: 1,
+      version: 'rap1',
       docUrl: '',
+      method: 'front',
       disableSubmit: false,
     }
   }
@@ -31,16 +37,21 @@ class ImportRepositoryForm extends Component<any, any> {
         <div className="rmodal-header">
           <span className="rmodal-title">{this.props.title}</span>
         </div>
-        <form className="form-horizontal" onSubmit={this.handleSubmit} >
+        <form className="form-horizontal" onSubmit={this.handleSubmit}>
           <div className="rmodal-body">
             <div className="form-group row">
               <label className="col-sm-2 control-label">版本</label>
               <div className="col-sm-10">
                 <RadioList
-                  data={[{ 'label': 'RAP1', 'value': 1 }]}
+                  data={[
+                    { label: 'RAP1', value: 'rap1' },
+                    { label: 'Swagger', value: 'swagger' },
+                  ]}
                   curVal={this.state.version}
                   name="version"
-                  disabled={true}
+                  onChange={(value: number) => {
+                    this.setState({ version: value })
+                  }}
                 />
               </div>
             </div>
@@ -53,7 +64,11 @@ class ImportRepositoryForm extends Component<any, any> {
                     value={this.state.docUrl}
                     onChange={e => this.setState({ docUrl: e.target.value })}
                     className="form-control"
-                    placeholder="http://rapapi.org/workspace/myWorkspace.do?projectId=145#2548"
+                    placeholder={
+                      this.state.version === 'rap1'
+                        ? 'http://rapapi.org/workspace/myWorkspace.do?projectId=145#2548'
+                        : 'http://118.89.64.176:9520/bond-basic/swagger-ui.html'
+                    }
                     spellCheck={false}
                     autoFocus={true}
                     required={true}
@@ -61,6 +76,25 @@ class ImportRepositoryForm extends Component<any, any> {
                   />
                 </div>
               </div>
+              {this.state.version === 'swagger' && (
+                <div className="form-group row">
+                  <label className="col-sm-2 control-label">导入方式</label>
+                  <div className="col-sm-10">
+                    <RadioList
+                      data={[
+                        { label: '前端', value: 'front' },
+                        { label: '服务端', value: 'back' },
+                      ]}
+                      curVal={this.state.method}
+                      name="method"
+                      onChange={(value: number) => {
+                        this.setState({ method: value })
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="form-group row mb0">
                 <label className="col-sm-2 control-label" />
                 <div className="col-sm-10">
@@ -71,7 +105,8 @@ class ImportRepositoryForm extends Component<any, any> {
                     variant="contained"
                     color="primary"
                     style={{ marginRight: 8 }}
-                  >{disableSubmit ? '导入中，请稍等...' : '提交'}
+                  >
+                    {disableSubmit ? '导入中，请稍等...' : '提交'}
                   </Button>
                   <Button onClick={() => rmodal.close()}>取消</Button>
                 </div>
@@ -90,24 +125,45 @@ class ImportRepositoryForm extends Component<any, any> {
       disableSubmit: true,
     })
     e.preventDefault()
-    const { docUrl, orgId } = this.state
-    this.props.importRepository({ docUrl, orgId }, (res: any) => {
+    const { docUrl, orgId, version, method } = this.state
+    try {
+      if (method === 'front') {
+        this.props.importRepositoryByFront({ docUrl, orgId }, (res: any) => {
+          this.setState({
+            disableSubmit: false,
+          })
+          if (res.isOk) {
+            this.context.rmodal.resolve()
+          } else {
+            console.log(res.message)
+          }
+        })
+      } else {
+        this.props.importRepository({ docUrl, orgId, version }, (res: any) => {
+          this.setState({
+            disableSubmit: false,
+          })
+          if (res.isOk) {
+            this.context.rmodal.resolve()
+          } else {
+            console.log(res.message)
+          }
+        })
+      }
+    } catch (error) {
       this.setState({
         disableSubmit: false,
       })
-      if (res.isOk) {
-        this.context.rmodal.resolve()
-      } else {
-        console.log(res.message)
-      }
-    })
-  }
+    }
+
+  };
 }
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
   importRepository,
+  importRepositoryByFront,
   fetchRepositoryList,
-})
+}
 
 export default connect(
   null,

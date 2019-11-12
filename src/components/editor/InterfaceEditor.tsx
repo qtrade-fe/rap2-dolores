@@ -10,9 +10,10 @@ import PropertyList from './PropertyList'
 import MoveInterfaceForm from './MoveInterfaceForm'
 import { fetchRepository } from '../../actions/repository'
 import { RootState } from 'actions/types'
-import { lockInterface, unlockInterface } from 'actions/interface'
+import { lockInterface, unlockInterface, syncInterface } from 'actions/interface'
 import { updateProperties } from 'actions/property'
 import { updateInterface } from 'actions/interface'
+import { showMessage, MSG_TYPE } from 'actions/common'
 
 export const RequestPropertyList = (props: any) => {
   return (
@@ -32,6 +33,8 @@ type InterfaceEditorProps = {
   unlockInterface: typeof unlockInterface;
   updateInterface: typeof updateInterface;
   updateProperties: typeof updateProperties;
+  syncInterface: typeof syncInterface;
+  showMessage: typeof showMessage;
 }
 
 type InterfaceEditorState = {
@@ -56,6 +59,7 @@ class InterfaceEditor extends Component<
     handleAddMemoryProperties: PropTypes.func.isRequired,
     handleDeleteMemoryProperty: PropTypes.func.isRequired,
     handleChangeProperty: PropTypes.func.isRequired,
+    handleSyncInterface: PropTypes.func.isRequired,
   }
   constructor(props: any) {
     super(props)
@@ -123,6 +127,7 @@ class InterfaceEditor extends Component<
             this.handleSaveInterfaceAndProperties
           }
           handleUnlockInterface={this.handleUnlockInterface}
+          handleSyncInterface={this.handleSyncInterface}
         />
         <InterfaceSummary
           repository={repository}
@@ -271,6 +276,13 @@ class InterfaceEditor extends Component<
     const { itf, unlockInterface } = this.props
     unlockInterface(itf.id)
   };
+  handleSyncInterface = () => {
+    const { itf, syncInterface, showMessage } = this.props
+    syncInterface(itf.id, ( payload: any ) => {
+      const {counter} = payload
+      showMessage(`同步成功：${counter.modify}更改，${counter.create}创建，${counter.delete}删除`, MSG_TYPE.SUCCESS)
+    })
+  }
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -283,6 +295,8 @@ const mapDispatchToProps = {
   unlockInterface,
   updateProperties,
   updateInterface,
+  syncInterface,
+  showMessage,
 }
 export default connect(
   mapStateToProps,

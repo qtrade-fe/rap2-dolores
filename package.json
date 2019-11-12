@@ -13,7 +13,8 @@
     "test-backup": "npm run lint && react-scripts test --env=jsdom",
     "test": "npm run lint",
     "eject": "react-scripts eject",
-    "lint": "tslint --project ./ -c tslint.json"
+    "lint": "tslint --project ./ -c tslint.json",
+    "lint:fix": "tslint --project ./ -c tslint.json --fix"
   },
   "repository": {
     "type": "git",

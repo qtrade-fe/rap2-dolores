@@ -113,7 +113,7 @@ class InterfaceSummary extends Component<
   constructor(props: any) {
     super(props)
     this.state = {
-      bodyOption: BODY_OPTION.FORM_DATA,
+      bodyOption: props.itf.bodyType || BODY_OPTION.FORM_DATA,
       requestParamsType:
         props.itf.method === 'POST'
           ? REQUEST_PARAMS_TYPE.BODY_PARAMS
@@ -188,7 +188,7 @@ class InterfaceSummary extends Component<
       editable,
       handleChangeInterface,
     } = this.props
-    const { requestParamsType } = this.state
+    const { requestParamsType, bodyOption } = this.state
     const keyMap = {
       COPY_MODEL_NAME: ['ctrl+alt+c'],
     }
@@ -344,6 +344,16 @@ class InterfaceSummary extends Component<
                   </CopyToClipboard>
                 </li>
               )}
+              {itf.method === 'POST' && (
+                <li>
+                  <CopyToClipboard text={itf.bodyType}>
+                    <span>
+                      <span className="label">请求体格式：</span>
+                      <span>{itf.bodyType}</span>
+                    </span>
+                  </CopyToClipboard>
+                </li>
+              )}
             </>
           )}
         </ul>
@@ -416,7 +426,8 @@ class InterfaceSummary extends Component<
                 type="radio"
                 name="inlineRadioOptions"
                 id="inlineRadio1"
-                value="option1"
+                value={BODY_OPTION.FORM_DATA}
+                checked={bodyOption === BODY_OPTION.FORM_DATA}
               />
               <label className="form-check-label" htmlFor="inlineRadio1">
                 form-data
@@ -431,7 +442,8 @@ class InterfaceSummary extends Component<
                 type="radio"
                 name="inlineRadioOptions"
                 id="inlineRadio2"
-                value="option2"
+                value={BODY_OPTION.FORM_URLENCODED}
+                checked={bodyOption === BODY_OPTION.FORM_URLENCODED}
               />
               <label className="form-check-label" htmlFor="inlineRadio2">
                 x-www-form-urlencoded
@@ -446,7 +458,8 @@ class InterfaceSummary extends Component<
                 type="radio"
                 name="inlineRadioOptions"
                 id="inlineRadio3"
-                value="option3"
+                value={BODY_OPTION.RAW}
+                checked={bodyOption === BODY_OPTION.RAW}
               />
               <label className="form-check-label" htmlFor="inlineRadio3">
                 raw
@@ -461,7 +474,8 @@ class InterfaceSummary extends Component<
                 type="radio"
                 name="inlineRadioOptions"
                 id="inlineRadio4"
-                value="option4"
+                value={BODY_OPTION.BINARY}
+                checked={bodyOption === BODY_OPTION.BINARY}
               />
               <label className="form-check-label" htmlFor="inlineRadio4">
                 binary

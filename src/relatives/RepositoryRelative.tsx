@@ -51,7 +51,9 @@ export default {
               modules: modules.map((mod: any) => ({
                 ...mod,
                 interfaces: mod.interfaces.map((itf: any) => {
-                  if (itf.id !== itfId) { return itf }
+                  if (itf.id !== itfId) {
+                    return itf
+                  }
                   return {
                     ...itf,
                     lockerId: locker.id,
@@ -72,7 +74,9 @@ export default {
               modules: modules.map((mod: any) => ({
                 ...mod,
                 interfaces: mod.interfaces.map((itf: any) => {
-                  if (itf.id !== itfId) { return itf }
+                  if (itf.id !== itfId) {
+                    return itf
+                  }
                   return {
                     ...itf,
                     lockerId: null,
@@ -83,6 +87,7 @@ export default {
               })),
             },
           }
+
         case PropertyAction.updatePropertiesSucceeded(undefined).type:
           modules = state.data.modules
           itfId = action.payload.itfId
@@ -94,7 +99,9 @@ export default {
               modules: modules.map((mod: any) => ({
                 ...mod,
                 interfaces: mod.interfaces.map((itf: any) => {
-                  if (itf.id !== itfId) { return itf }
+                  if (itf.id !== itfId) {
+                    return itf
+                  }
                   return {
                     ...itf,
                     properties,
@@ -114,7 +121,9 @@ export default {
               modules: modules.map((mod: any) => ({
                 ...mod,
                 interfaces: mod.interfaces.map((x: any) => {
-                  if (x.id !== itf.id) { return x }
+                  if (x.id !== itf.id) {
+                    return x
+                  }
                   return {
                     ...itf,
                     locker: x.locker,
@@ -147,11 +156,32 @@ export default {
               modules: modules.map((mod: any) =>
                 mod.id === itf.moduleId
                   ? {
-                    ...mod,
-                    interfaces: [...mod.interfaces, itf],
-                  }
+                      ...mod,
+                      interfaces: [...mod.interfaces, itf],
+                    }
                   : mod
               ),
+            },
+          }
+        case InterfaceAction.syncInterfaceSucceeded(undefined).type:
+          modules = state.data.modules
+          itf = action.payload.itf
+          return {
+            ...state,
+            data: {
+              ...state.data,
+              modules: modules.map((mod: any) => ({
+                ...mod,
+                interfaces: mod.interfaces.map((x: any) => {
+                  if (x.id !== itf.id) {
+                    return x
+                  }
+                  console.log(itf)
+                  return {
+                    ...itf,
+                  }
+                }),
+              })),
             },
           }
         case ModuleAction.updateModuleSucceeded(undefined).type:
@@ -164,10 +194,10 @@ export default {
               modules: modules.map((x: any) =>
                 x.id === mod.id
                   ? {
-                    ...x,
-                    name: mod.name,
-                    description: mod.description,
-                  }
+                      ...x,
+                      name: mod.name,
+                      description: mod.description,
+                    }
                   : x
               ),
             },
@@ -187,9 +217,11 @@ export default {
               modules: modules.map((mod: any) =>
                 mod.id === moduleId
                   ? {
-                    ...mod,
-                    interfaces: [...mod.interfaces].sort((a: any, b: any) => itfIdsMap[a.id] - itfIdsMap[b.id]),
-                  }
+                      ...mod,
+                      interfaces: [...mod.interfaces].sort(
+                        (a: any, b: any) => itfIdsMap[a.id] - itfIdsMap[b.id]
+                      ),
+                    }
                   : mod
               ),
             },
@@ -206,7 +238,9 @@ export default {
             ...state,
             data: {
               ...state.data,
-              modules: [...modules].sort((a: any, b: any) => moduleIdsMap[a.id] - moduleIdsMap[b.id]),
+              modules: [...modules].sort(
+                (a: any, b: any) => moduleIdsMap[a.id] - moduleIdsMap[b.id]
+              ),
             },
           }
         }
@@ -419,6 +453,8 @@ export default {
       RepositoryEffects.fetchRepositoryList,
     [RepositoryAction.importRepository(undefined, undefined).type]:
       RepositoryEffects.importRepository,
+    [RepositoryAction.importRepositoryByFront(undefined, undefined).type]:
+      RepositoryEffects.importRepositoryByFront,
     [RepositoryAction.fetchOwnedRepositoryList().type]:
       RepositoryEffects.fetchOwnedRepositoryList,
     [RepositoryAction.fetchJoinedRepositoryList().type]:
@@ -427,8 +463,7 @@ export default {
       ModuleEffects.sortModuleList,
     [InterfaceAction.fetchInterfaceCount().type]:
       InterfaceEffects.fetchInterfaceCount,
-    INTERFACE_LIST_SORT:
-      InterfaceEffects.sortInterfaceList,
+    INTERFACE_LIST_SORT: InterfaceEffects.sortInterfaceList,
     [PropertyAction.sortPropertyList(undefined, undefined).type]:
       PropertyEffects.sortPropertyList,
   },

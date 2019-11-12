@@ -6,6 +6,10 @@ export const importRepository = (data: any, onResolved: any) => ({ type: 'REPOSI
 export const importRepositorySucceeded = () => ({ type: 'REPOSITORY_IMPORT_SUCCEEDED' })
 export const importRepositoryFailed = (message: any) => ({ type: 'REPOSITORY_IMPORT_FAILED', message })
 
+export const importRepositoryByFront = (data: any, onResolved: any) => ({ type: 'REPOSITORY_IMPORT_FRONT', onResolved, data })
+export const importRepositoryByFrontSucceeded = () => ({ type: 'REPOSITORY_IMPORT_FRONT_SUCCEEDED' })
+export const importRepositoryByFrontFailed = (message: any) => ({ type: 'REPOSITORY_IMPORT_FRONT_FAILED', message })
+
 export const updateRepository = (repository: any, onResolved: any) => ({ type: 'REPOSITORY_UPDATE', repository, onResolved })
 export const updateRepositorySucceeded = (repository: any) => ({ type: 'REPOSITORY_UPDATE_SUCCEEDED', repository })
 export const updateRepositoryFailed = (message: any) => ({ type: 'REPOSITORY_UPDATE_FAILED', message })

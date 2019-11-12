@@ -170,6 +170,16 @@ export default {
       .then(res => res.json())
       .then(json => json.data)
   },
+  syncInterface(id: any) {
+    return fetch(`${serve}/interface/sync`, {
+      ...CREDENTIALS,
+      method: 'POST',
+      body: JSON.stringify({ id }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(res => res.json())
+      .then(json => json.data)
+  },
   // 属性 Property
   fetchPropertyList({ repositoryId = '', moduleId = '', interfaceId = '', name = '' }: any = {}) {
     return fetch(`${serve}/property/list?repositoryId=${repositoryId}&moduleId=${moduleId}&interfaceId=${interfaceId}&name=${name}`, { ...CREDENTIALS })

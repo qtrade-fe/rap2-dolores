@@ -6,10 +6,7 @@ import { GoOrganization } from 'react-icons/go'
 import { useSelector } from 'react-redux'
 import { RootState, Organization } from '../../actions/types'
 import { useHandleDelete, useHandleExit, useHandleJoin } from './OrganizationListParts'
-
-function avatar(user: any) {
-  return `https://work.alibaba-inc.com/photo/${user.empId}.220x220.jpg`
-}
+import { getAvatarUrl } from 'utils/ImageUtils'
 
 interface Props {
   organization: Organization
@@ -99,7 +96,7 @@ function OrganizationBlock(props: Props) {
             >
               <img
                 alt={organization.owner!.fullname}
-                src={avatar(organization.owner)}
+                src={getAvatarUrl(organization.owner, 'small')}
                 className="avatar owner"
               />
             </Popover>
@@ -108,7 +105,7 @@ function OrganizationBlock(props: Props) {
                 <img
                   alt={user.fullname}
                   title={user.fullname}
-                  src={avatar(user)}
+                  src={getAvatarUrl(user, 'small')}
                   className="avatar"
                 />
               </Popover>
