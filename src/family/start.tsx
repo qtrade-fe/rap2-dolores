@@ -8,7 +8,6 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 import { SnackbarProvider } from 'notistack'
 import { withStyles } from '@material-ui/core'
 import GlobalStyles from '../components/common/GlobalStyles'
-import { ThemeProvider } from '@material-ui/core/styles'
 import MuiTheme from '../components/common/MuiTheme'
 import Routes from 'routes'
 import { PropTypes } from 'family'
@@ -27,17 +26,15 @@ const start = (
     }
     render() {
       return (
-        <ThemeProvider theme={MuiTheme}>
-          <MuiThemeProvider theme={MuiTheme}>
-            <SnackbarProvider maxSnack={3}>
-              <Provider store={store}>
-                <ConnectedRouter history={history}>
-                  <Routes/>
-                </ConnectedRouter>
-              </Provider>
-            </SnackbarProvider>
-          </MuiThemeProvider>
-        </ThemeProvider>
+        <MuiThemeProvider theme={MuiTheme}>
+          <SnackbarProvider maxSnack={3}>
+            <Provider store={store}>
+              <ConnectedRouter history={history}>
+                <Routes/>
+              </ConnectedRouter>
+            </Provider>
+          </SnackbarProvider>
+        </MuiThemeProvider>
       )
     }
   }
