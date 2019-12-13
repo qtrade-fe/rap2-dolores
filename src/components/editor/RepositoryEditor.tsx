@@ -12,7 +12,8 @@ import {
   addRepository,
   updateRepository,
   clearRepository,
-  fetchRepository
+  fetchRepository,
+  syncRepository
 } from '../../actions/repository'
 import {
   addModule,
@@ -40,12 +41,15 @@ import {
   GoPlug,
   GoDatabase,
   GoJersey,
-  GoLinkExternal
+  GoLinkExternal,
 } from 'react-icons/go'
+import SyncAlt from '@material-ui/icons/SyncAlt'
 
 import './RepositoryEditor.css'
 import ExportPostmanForm from '../repository/ExportPostmanForm'
 import { RootState } from 'actions/types'
+import { showMessage, MSG_TYPE } from 'actions/common'
+import LoadingMask from '../common/LoadingMask'
 
 // DONE 2.1 import Spin from '../utils/Spin'
 // TODO 2.2 缺少测试器
@@ -102,12 +106,15 @@ class RepositoryEditor extends Component<any, any> {
       auth,
     } = this.props
     let { repository } = this.props
+
     if (!repository.fetching && !repository.data) {
       return <div className="p100 fontsize-30 text-center">未找到对应仓库</div>
     }
     if (repository.fetching || !repository.data || !repository.data.id) {
       return <Spin />
     }
+
+    const { syncing } = repository
 
     repository = repository.data
     if (repository.name) {
@@ -135,8 +142,13 @@ class RepositoryEditor extends Component<any, any> {
       (item: any) => item.id === auth.id
     )
 
+    const canSync = !!repository.sourceUrl
+
     return (
       <article className="RepositoryEditor">
+        {
+          syncing && <LoadingMask open={syncing} label="同步中，请耐心等待" />
+        }
         <div className="header">
           <span className="title">
             <GoRepo className="mr6 color-9" />
@@ -198,6 +210,15 @@ class RepositoryEditor extends Component<any, any> {
             >
               <GoLinkExternal /> 导出
             </span>
+            {
+              canSync &&
+              <span
+                className="fake-link edit"
+                onClick={() => this.handleSyncRepository(repository)}
+              >
+                <SyncAlt /> 同步
+              </span>
+            }
 
             <ExportPostmanForm
               title="导出"
@@ -238,6 +259,18 @@ class RepositoryEditor extends Component<any, any> {
     const { pathname, hash, search } = this.props.router.location
     this.props.replace(pathname + search + hash)
   };
+  handleSyncRepository = async ({ id, name }: any) => {
+    const message = `仓库被同步后，所有模块和接口都会与远程保持一致，且不可恢复！\n确认继续同步『#${
+      id
+    } ${name}』吗？`
+    if (window.confirm(message)) {
+      const { syncRepository, showMessage } = this.props
+      syncRepository(id, ( payload: any ) => {
+        const {counter} = payload
+        showMessage(`同步成功：${counter.modify}更改，${counter.create}创建，${counter.delete}删除`, MSG_TYPE.SUCCESS)
+      })
+    }
+  }
 }
 
 // 容器组件
@@ -266,6 +299,8 @@ const mapDispatchToProps = {
   onDeleteProperty: deleteProperty,
   onSortPropertyList: sortPropertyList,
   replace,
+  syncRepository,
+  showMessage,
 }
 export default connect(
   mapStateToProps,

@@ -93,6 +93,8 @@ export interface Repository {
   collaboratorIds?: string[]
 
   collaboratorIdstring?: string
+
+  sourceUrl?: string
 }
 
 export interface Module {

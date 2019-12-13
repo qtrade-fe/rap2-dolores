@@ -161,3 +161,14 @@ export function* fetchJoinedRepositoryList(action: any) {
     yield put(RepositoryAction.fetchJoinedRepositoryListFailed(e.message))
   }
 }
+
+export function* syncRepository(action: any) {
+  try {
+    const payload = yield call(RepositoryService.syncRepository, action.id)
+    yield put(RepositoryAction.syncRepositorySucceeded(payload))
+    if (action.onResolved) { action.onResolved(payload) }
+  } catch (e) {
+    console.error(e.message)
+    yield put(RepositoryAction.syncRepositoryFailed(e.message))
+  }
+}

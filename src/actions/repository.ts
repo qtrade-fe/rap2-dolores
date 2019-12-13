@@ -44,3 +44,17 @@ export const fetchJoinedRepositoryList = (
 ) => ({ type: 'JOINED_REPOSITORY_LIST_FETCH', user, name })
 export const fetchJoinedRepositoryListSucceeded = (repositories: any) => ({ type: 'JOINED_REPOSITORY_LIST_FETCH_SUCCEEDED', repositories })
 export const fetchJoinedRepositoryListFailed = (message: any) => ({ type: 'JOINED_REPOSITORY_LIST_FETCH_FAILED', message })
+
+export const syncRepository = (id: any, onResolved?: any) => ({
+  type: 'REPOSITORY_SYNC',
+  id,
+  onResolved,
+})
+export const syncRepositorySucceeded = (payload: any) => ({
+  type: 'REPOSITORY_SYNC_SUCCEEDED',
+  payload,
+})
+export const syncRepositoryFailed = (message: any) => ({
+  type: 'REPOSITORY_SYNC_FAILED',
+  message,
+})

@@ -127,7 +127,7 @@ class ImportRepositoryForm extends Component<any, any> {
     e.preventDefault()
     const { docUrl, orgId, version, method } = this.state
     try {
-      if (method === 'front') {
+      if (version === 'swagger' && method === 'front') {
         this.props.importRepositoryByFront({ docUrl, orgId }, (res: any) => {
           this.setState({
             disableSubmit: false,

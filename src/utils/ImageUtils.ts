@@ -14,8 +14,9 @@ export const getBGImageUrl = () => {
 export const getAvatarUrl = (user: any, size: 'small'|'normal' = 'normal') => {
   const { avatar } = user
   console.log(avatar)
+  // 企微头像size值：0(默认)、46、64、96、132
   if (avatar && size === 'small') {
-    return avatar.replace(/\/0$/, `/100`)
+    return avatar.replace(/\/0$/, `/64`)
   }
   if (avatar) {
     return avatar
