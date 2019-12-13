@@ -16,8 +16,9 @@ export default {
     const swResources = await getSwaggerApi(`${domain}/swagger-resources`)
     const apiDocs = []
     for (const res of swResources) {
-      const apiDoc = await getSwaggerApi(`${domain}${res.location}`)
-      apiDocs.push(apiDoc)
+      const url = `${domain}${res.location}`
+      const apiDoc = await getSwaggerApi(url)
+      apiDocs.push({ data: apiDoc, url })
     }
 
     return apiDocs

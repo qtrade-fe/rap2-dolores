@@ -5,9 +5,9 @@ const config: IConfig = {
     key: 'koa:sess',
   },
   work_wx: {
-    corpId: 'wwded713f7f22ac9f7',
-    agentId: '1000028',
-    agentSecret: 'O96D3UinLFeo3peIowkC-cXZtETPqXifLiTYFiyg654',
+    corpId: 'wwfe99d324096b2f7e',
+    agentId: '1000002',
+    agentSecret: 'JDCIdSequQT-5ZAHN9obGpBpknZ3YXKc5A41sHs4B2M',
   },
 }
 // const config: IConfig = {

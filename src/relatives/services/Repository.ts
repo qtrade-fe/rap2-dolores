@@ -70,4 +70,14 @@ export default {
       .then(res => res.json())
       .then(json => json.data)
   },
+  syncRepository(id: any) {
+    return fetch(`${serve}/repository/sync`, {
+      ...CREDENTIALS,
+      method: 'POST',
+      body: JSON.stringify({ id }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(res => res.json())
+      .then(json => json.data)
+  },
 }

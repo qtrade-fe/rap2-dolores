@@ -14,6 +14,7 @@ export default {
           modules: [],
         },
         fetching: false,
+        syncing: false,
       },
       action: any
     ) {
@@ -40,6 +41,25 @@ export default {
             data: {},
             fetching: false,
           }
+        case RepositoryAction.syncRepository({
+          id: undefined,
+        }).type:
+            return {
+              data: {
+                ...state.data,
+              },
+              syncing: true,
+            }
+        case RepositoryAction.syncRepositorySucceeded(undefined).type:
+          return {
+            data: action.payload.repo,
+            syncing: false,
+          }
+        case RepositoryAction.syncRepositoryFailed(undefined).type:
+            return {
+              data: {},
+              syncing: false,
+            }
         case InterfaceAction.lockInterfaceSucceeded(undefined, undefined).type:
           modules = state.data.modules
           itfId = action.payload.itfId
@@ -466,6 +486,8 @@ export default {
     INTERFACE_LIST_SORT: InterfaceEffects.sortInterfaceList,
     [PropertyAction.sortPropertyList(undefined, undefined).type]:
       PropertyEffects.sortPropertyList,
+    [RepositoryAction.syncRepository(undefined, undefined).type]:
+      RepositoryEffects.syncRepository,
   },
   listeners: {
     '/repository': [
