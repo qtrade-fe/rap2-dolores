@@ -267,7 +267,11 @@ class RepositoryEditor extends Component<any, any> {
       const { syncRepository, showMessage } = this.props
       syncRepository(id, ( payload: any ) => {
         const {counter} = payload
-        showMessage(`同步成功：${counter.modify}更改，${counter.create}创建，${counter.delete}删除`, MSG_TYPE.SUCCESS)
+        showMessage(<div>
+          <p>【模块】{counter.mModCount}更改，{counter.cModCount}创建，{counter.dModCount}删除</p>
+          <p>【接口】{counter.mItfCount}更改，{counter.cItfCount}创建，{counter.dItfCount}删除</p>
+          <p>【属性】{counter.mPropCount}更改，{counter.cPropCount}创建，{counter.dPropCount}删除</p>
+        </div>, MSG_TYPE.SUCCESS)
       })
     }
   }
