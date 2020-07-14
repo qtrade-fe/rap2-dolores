@@ -170,5 +170,7 @@ export function* syncRepository(action: any) {
   } catch (e) {
     console.error(e.message)
     yield put(RepositoryAction.syncRepositoryFailed(e.message))
+  } finally {
+    if (action.onFulfilled) { action.onFulfilled() }
   }
 }

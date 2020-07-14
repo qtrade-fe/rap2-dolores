@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import qs from 'querystring'
 import { PropTypes, connect, Link, replace, _ } from '../../family'
-import { serve } from '../../relatives/services/constant'
+import { serve, CREDENTIALS } from '../../relatives/services/constant'
 import { Spin } from '../utils'
 import RepositoryForm from '../repository/RepositoryForm'
 import RepositorySearcher from './RepositorySearcher'
@@ -94,12 +95,6 @@ class RepositoryEditor extends Component<any, any> {
     return _.pick(this.props, Object.keys(RepositoryEditor.childContextTypes))
   }
 
-  componentDidMount() {
-    // const id = +this.props.location.params.id
-    // if (!this.props.repository.data || this.props.repository.data.id !== id) {
-    //   this.props.onFetchRepository({ id })
-    // }
-  }
   render() {
     const {
       location: { params },
@@ -272,6 +267,16 @@ class RepositoryEditor extends Component<any, any> {
           <p>【接口】{counter.mItfCount}更改，{counter.cItfCount}创建，{counter.dItfCount}删除</p>
           <p>【属性】{counter.mPropCount}更改，{counter.cPropCount}创建，{counter.dPropCount}删除</p>
         </div>, MSG_TYPE.SUCCESS)
+      }, () => {
+        fetch(`https://test.qtrade.com.cn/tardis/rap2/sync`, {
+          ...CREDENTIALS,
+          method: 'POST',
+          mode: 'no-cors',
+          body: qs.stringify({
+            repositoryName: name,
+          }),
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        })
       })
     }
   }

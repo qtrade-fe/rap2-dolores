@@ -45,10 +45,11 @@ export const fetchJoinedRepositoryList = (
 export const fetchJoinedRepositoryListSucceeded = (repositories: any) => ({ type: 'JOINED_REPOSITORY_LIST_FETCH_SUCCEEDED', repositories })
 export const fetchJoinedRepositoryListFailed = (message: any) => ({ type: 'JOINED_REPOSITORY_LIST_FETCH_FAILED', message })
 
-export const syncRepository = (id: any, onResolved?: any) => ({
+export const syncRepository = (id: any, onResolved?: any, onFulfilled?: any) => ({
   type: 'REPOSITORY_SYNC',
   id,
   onResolved,
+  onFulfilled,
 })
 export const syncRepositorySucceeded = (payload: any) => ({
   type: 'REPOSITORY_SYNC_SUCCEEDED',
