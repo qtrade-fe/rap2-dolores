@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import qs from 'querystring'
 import { PropTypes, connect, Link, replace, _ } from '../../family'
-import { serve, CREDENTIALS } from '../../relatives/services/constant'
+import { serve } from '../../relatives/services/constant'
 import { Spin } from '../utils'
 import RepositoryForm from '../repository/RepositoryForm'
 import RepositorySearcher from './RepositorySearcher'
@@ -51,6 +50,7 @@ import ExportPostmanForm from '../repository/ExportPostmanForm'
 import { RootState } from 'actions/types'
 import { showMessage, MSG_TYPE } from 'actions/common'
 import LoadingMask from '../common/LoadingMask'
+import SyncTardisModal from './SyncTardisModal'
 
 // DONE 2.1 import Spin from '../utils/Spin'
 // TODO 2.2 缺少测试器
@@ -89,6 +89,7 @@ class RepositoryEditor extends Component<any, any> {
     this.state = {
       update: false,
       exportPostman: false,
+      openSyncTardisModal: false,
     }
   }
   getChildContext() {
@@ -247,6 +248,12 @@ class RepositoryEditor extends Component<any, any> {
             />
           </div>
         </div>
+        {/* 同步后更新到Tardis */}
+        <SyncTardisModal
+          title="同步到Tardis"
+          open={this.state.openSyncTardisModal}
+          onClose={() => this.toggleSyncTardis(false)}
+        />
       </article>
     )
   }
@@ -268,18 +275,13 @@ class RepositoryEditor extends Component<any, any> {
           <p>【属性】{counter.mPropCount}更改，{counter.cPropCount}创建，{counter.dPropCount}删除</p>
         </div>, MSG_TYPE.SUCCESS)
       }, () => {
-        fetch(`https://test.qtrade.com.cn/tardis/rap2/sync`, {
-          ...CREDENTIALS,
-          method: 'POST',
-          mode: 'no-cors',
-          body: qs.stringify({
-            repositoryName: name,
-          }),
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        })
+        this.toggleSyncTardis(true)
       })
     }
-  }
+  };
+  toggleSyncTardis = (open: boolean) => {
+    this.setState({ openSyncTardisModal: open })
+  };
 }
 
 // 容器组件
