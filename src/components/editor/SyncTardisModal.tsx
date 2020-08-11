@@ -57,12 +57,12 @@ interface Props {
   title?: string
   open: boolean
   onClose: (isOk?: boolean) => void
-  repository?: Repository
+  repository: Repository
   showMessage: (message: string, type?: MSG_TYPE | undefined) => void
 }
 
 function SyncTardisModal(props: Props) {
-  const { open, onClose, title } = props
+  const { open, onClose, title, repository } = props
   const classes = useStyles()
 
   return (
@@ -88,7 +88,7 @@ function SyncTardisModal(props: Props) {
                 method: 'POST',
                 mode: 'no-cors',
                 body: qs.stringify({
-                  repositoryName: 'name',
+                  repositoryName: repository && repository.name,
                 }),
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               }).then(() => {

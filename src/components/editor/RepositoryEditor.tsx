@@ -252,6 +252,7 @@ class RepositoryEditor extends Component<any, any> {
         <SyncTardisModal
           title="同步到Tardis"
           open={this.state.openSyncTardisModal}
+          repository={repository}
           onClose={() => this.toggleSyncTardis(false)}
         />
       </article>
